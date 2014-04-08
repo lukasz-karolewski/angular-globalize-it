@@ -13,20 +13,20 @@ angular.module('angular.i18n')
 
                     function doTranslate() {
                         //translate innerHTML
-                        var args = [i18nService.translate(attrs.resKey)];
+                        var args = [attrs.resKey];
                         if (attrs.resParams) {
                             angular.forEach(attrs.resParams.split(','), function (value, index) {
                                 args.push(scope.$eval(value.trim()));
                             });
                         }
-                        element.html(String.format.apply(null, args));
+                        element.html(i18nService.translate.apply(i18nService, args));
 
                         //translate attributes
                         angular.forEach(translatableAttrs, function (attr) {
-                            var resourceKey = i18nService.translate(attrs.resKey + "." + attr);
-                            if (resourceKey) {
-                                args[0] = resourceKey;
-                                attrs.$set(attr, String.format.apply(null, args));
+                            args[0] = attrs.resKey + "." + attr;
+                            var value = i18nService.translate.apply(i18nService, args);
+                            if (value) {
+                                attrs.$set(attr, value);
                             }
                         });
                     }

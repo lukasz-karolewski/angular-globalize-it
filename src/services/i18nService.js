@@ -62,7 +62,7 @@ angular.module('angular.i18n')
         I18nService.prototype.translate = function (key) {
             arguments[0] = Globalize.localize(key, this.uiCulture);
 
-            return String.format.apply(null, arguments);
+            return format.apply(null, arguments);
         };
 
         I18nService.prototype.getPluralizedValues = function (key) {
@@ -75,4 +75,18 @@ angular.module('angular.i18n')
             });
             return whenValues;
         };
+
+        //port of .net String.format method
+        function format()  {
+            var s = arguments[0];
+            
+            if (typeof s != 'undefined') {
+                for (var i = 0; i < arguments.length - 1; i++) {
+                    var reg = new RegExp("\\{" + i + "\\}", "gm");
+                    s = s.replace(reg, arguments[i + 1]);
+                }
+            }
+            return s;
+        }
+
     }]);

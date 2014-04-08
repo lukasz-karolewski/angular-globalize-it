@@ -53,7 +53,7 @@ describe('Provider: i18nService', function () {
                         i18nServiceProvider.setUICulture('pl');
                     });
 
-                module('appstore.i18n', 'fake');
+                module('angular.i18n', 'fake');
             }
         );
 
