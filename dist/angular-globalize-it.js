@@ -1,7 +1,7 @@
-/* angular-globalize-it-1.0.0 09-04-2014 */
+/* angular-globalize-it-1.0.3 09-04-2014 */
 "use strict";
 // Source: src/app.js
-angular.module('angular-globalize-it', []);;
+angular.module('angular-globalize-it', []);
 // Source: src/services/i18nService.js
 angular.module('angular-globalize-it')
     .provider('i18nService', [function () {
@@ -93,7 +93,7 @@ angular.module('angular-globalize-it')
         }
 
     }]);
-;
+
 // Source: src/filters/i18nFilters.js
 angular.module('angular-globalize-it')
 
@@ -132,7 +132,7 @@ angular.module('angular-globalize-it')
         return function (input) {
             return i18nService.formatNumber(input, 'percent');
         };
-    }]);;
+    }]);
 // Source: src/directives/resKey.js
 angular.module('angular-globalize-it')
     .directive('resKey', ['i18nService',
