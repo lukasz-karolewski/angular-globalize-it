@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('angular.i18n')
 
     .filter('i18nDate', ['i18nService', function (i18nService) {

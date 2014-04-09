@@ -3,7 +3,7 @@
   "browser": true,
   "esnext": true,
   "bitwise": true,
-//"camelcase": true,
+  "camelcase": true,
   "curly": true,
 //"eqeqeq": true,
   "immed": true,
@@ -11,20 +11,16 @@
   "latedef": true,
   "newcap": true,
   "noarg": true,
-//"quotmark": "single",
+  "quotmark": "single",
   "regexp": true,
   "undef": true,
-//"unused": true,
-//"strict": true,
+  "unused": true,
+  "strict": true,
   "trailing": true,
   "smarttabs": true,
 
-  // please do not add anything to globals other then libraries, all appcenter globals should be accessed via shared/$appstoreSettingsProvider via globals function
   "globals": {
     "angular": false,
-    "$": false,             //jquery
-    "_":false,              //underscore
-    "Highcharts":false,
     "Globalize":false
   }
 }

@@ -1,4 +1,4 @@
-/* angular-i18n-1.0.0 09-04-2014 */
+/* angular-globalize-it-1.0.0 09-04-2014 */
 "use strict";
 // Source: src/app.js
 angular.module('angular.i18n', []);;
@@ -85,7 +85,7 @@ angular.module('angular.i18n')
             
             if (typeof s != 'undefined') {
                 for (var i = 0; i < arguments.length - 1; i++) {
-                    var reg = new RegExp("\\{" + i + "\\}", "gm");
+                    var reg = new RegExp('\\{' + i + '\\}', 'gm');
                     s = s.replace(reg, arguments[i + 1]);
                 }
             }
@@ -135,23 +135,23 @@ angular.module('angular.i18n')
     }]);;
 // Source: src/directives/resKey.js
 angular.module('angular.i18n')
-    .directive('resKey', ['i18nService', '$log',
-        function (i18nService, $log) {
+    .directive('resKey', ['i18nService',
+        function (i18nService) {
             return {
                 restrict: 'A',
                 link: function (scope, element, attrs) {
                     // watch scope for changes and update translations
-                    scope.$watch(function (scope) {
+                    scope.$watch(function () {
                         doTranslate();
                     });
 
-                    var translatableAttrs = ["placeholder", "alt", "title"];
+                    var translatableAttrs = ['placeholder', 'alt', 'title'];
 
                     function doTranslate() {
                         //translate innerHTML
                         var args = [attrs.resKey];
                         if (attrs.resParams) {
-                            angular.forEach(attrs.resParams.split(','), function (value, index) {
+                            angular.forEach(attrs.resParams.split(','), function (value) {
                                 args.push(scope.$eval(value.trim()));
                             });
                         }
@@ -159,7 +159,7 @@ angular.module('angular.i18n')
 
                         //translate attributes
                         angular.forEach(translatableAttrs, function (attr) {
-                            args[0] = attrs.resKey + "." + attr;
+                            args[0] = attrs.resKey + '.' + attr;
                             var value = i18nService.translate.apply(i18nService, args);
                             if (value) {
                                 attrs.$set(attr, value);

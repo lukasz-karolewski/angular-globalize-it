@@ -1,12 +1,30 @@
 {
-  "name": "angular-i18n",
+  "name": "angular-globalize-it",
   "version": "1.0.0",
+  "main": "dist/angular-globalize-it.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "src"
+    "test",
+    "*.md",
+    "Gruntfile.js",
+    "package.json"
+  ],
   "dependencies": {
     "angular": "1.2.16",
     "globalize": "~0.1.1"
   },
   "devDependencies": {
-	"angular-mocks": "1.2.16"
-  }
-
+    "angular-mocks": "1.2.16"
+  },
+  "keywords": [
+    "angular",
+    "globalize",
+    "i18n",
+    "l10n",
+    "jquery.globalize",
+    "globalization",
+    "localization"
+  ] 
 }
