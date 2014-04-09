@@ -34,7 +34,7 @@ module.exports = function (grunt) {
                     ascii_only: true
                 },
                 ascii_only: true,
-                banner: '/* <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
+                banner: '/* <%= pkg.name %>-<%= pkg.version %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
             },
             angulari18n: {
                 files: {

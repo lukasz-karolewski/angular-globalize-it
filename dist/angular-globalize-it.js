@@ -1,4 +1,4 @@
-/* angular-globalize-it-1.0.3 09-04-2014 */
+/* angular-globalize-it-1.0.0 09-04-2014 */
 "use strict";
 // Source: src/app.js
 angular.module('angular-globalize-it', []);
