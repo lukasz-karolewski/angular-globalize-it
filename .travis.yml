@@ -9,3 +9,5 @@ install:
   - bower install
 script:
   - grunt
+  - karma start karma.conf.js
+  - karma start karma.conf.min.js
