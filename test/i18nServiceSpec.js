@@ -4,7 +4,7 @@ describe('Provider: i18nService', function () {
     var i18nService;
 
     describe('formatting with default culture', function () {
-        beforeEach(module('angular.i18n'));
+        beforeEach(module('angular-globalize-it'));
 
         // instantiate service
         beforeEach(inject(function (_i18nService_) {
@@ -53,7 +53,7 @@ describe('Provider: i18nService', function () {
                         i18nServiceProvider.setUICulture('pl');
                     });
 
-                module('angular.i18n', 'fake');
+                module('angular-globalize-it', 'fake');
             }
         );
 
@@ -117,7 +117,7 @@ describe('Provider: i18nService', function () {
                         });
                     });
 
-                module('angular.i18n', 'fake');
+                module('angular-globalize-it', 'fake');
             }
         );
 

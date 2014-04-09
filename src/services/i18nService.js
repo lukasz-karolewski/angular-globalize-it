@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angular.i18n')
+angular.module('angular-globalize-it')
     .provider('i18nService', [function () {
         var culture = 'en-US';
         var uiCulture = 'en';

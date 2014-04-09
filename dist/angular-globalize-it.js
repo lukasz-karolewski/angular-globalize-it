@@ -1,9 +1,9 @@
 /* angular-globalize-it-1.0.0 09-04-2014 */
 "use strict";
 // Source: src/app.js
-angular.module('angular.i18n', []);;
+angular.module('angular-globalize-it', []);;
 // Source: src/services/i18nService.js
-angular.module('angular.i18n')
+angular.module('angular-globalize-it')
     .provider('i18nService', [function () {
         var culture = 'en-US';
         var uiCulture = 'en';
@@ -95,7 +95,7 @@ angular.module('angular.i18n')
     }]);
 ;
 // Source: src/filters/i18nFilters.js
-angular.module('angular.i18n')
+angular.module('angular-globalize-it')
 
     .filter('i18nDate', ['i18nService', function (i18nService) {
         return function (input) {
@@ -134,7 +134,7 @@ angular.module('angular.i18n')
         };
     }]);;
 // Source: src/directives/resKey.js
-angular.module('angular.i18n')
+angular.module('angular-globalize-it')
     .directive('resKey', ['i18nService',
         function (i18nService) {
             return {

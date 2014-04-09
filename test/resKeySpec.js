@@ -23,7 +23,7 @@
                     });
                 });
 
-            module('angular.i18n', 'fake');
+            module('angular-globalize-it', 'fake');
         }
     );
 

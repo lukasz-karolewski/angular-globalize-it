@@ -2,7 +2,7 @@
 
 describe('Filter: i18nDate', function () {
     // load the filter's module
-    beforeEach(module('angular.i18n'));
+    beforeEach(module('angular-globalize-it'));
 
     // initialize a new instance of the filter before each test
     var i18nDate;
@@ -25,7 +25,7 @@ describe('Filter: i18nDate', function () {
 
 describe('Filter: i18nDateTime', function () {
     // load the filter's module
-    beforeEach(module('angular.i18n'));
+    beforeEach(module('angular-globalize-it'));
 
     // initialize a new instance of the filter before each test
     var i18nDateTime;
@@ -47,7 +47,7 @@ describe('Filter: i18nDateTime', function () {
 
 describe('Filter: i18nNumber', function () {
     // load the filter's module
-    beforeEach(module('angular.i18n'));
+    beforeEach(module('angular-globalize-it'));
 
     // initialize a new instance of the filter before each test
     var i18nNumber;
@@ -65,7 +65,7 @@ describe('Filter: i18nNumber', function () {
 
 describe('Filter: i18nPercent', function () {
     // load the filter's module
-    beforeEach(module('angular.i18n'));
+    beforeEach(module('angular-globalize-it'));
 
     // initialize a new instance of the filter before each test
     var i18nPercent;

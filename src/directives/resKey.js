@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angular.i18n')
+angular.module('angular-globalize-it')
     .directive('resKey', ['i18nService',
         function (i18nService) {
             return {
