@@ -1,15 +1,8 @@
 module.exports = function (grunt) {
-    // Load grunt tasks automatically
     require('load-grunt-tasks')(grunt);
-
-    // Time how long tasks take. Can help when optimizing build times
     require('time-grunt')(grunt);
 
-    // the default task can be run just by typing "grunt" on the command line
-    grunt.registerTask('default', ['jshint', 'concat', 'uglify']);
-
-    // this would be run by typing "grunt test" on the command line
-    grunt.registerTask('test', ['jshint', 'karma']);
+    grunt.registerTask('default', ['jshint', 'concat', 'uglify', 'karma']);
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -17,7 +10,7 @@ module.exports = function (grunt) {
         concat: {
             options: {
                 banner: '/* <%= pkg.name %>-<%= pkg.version %> <%= grunt.template.today("dd-mm-yyyy") %> */\n"use strict";\n',
-                separator: ';\n',
+                separator: '\n',
                 process: function (src, filepath) {
                     return '// Source: ' + filepath + '\n' +
                         src.replace(/(^|\n)[ \t]*('use strict'|"use strict");?\s*/g, '$1');
@@ -61,13 +54,12 @@ module.exports = function (grunt) {
         },
 
         karma: {
-            options: {
-                configFile: 'karma.conf.js'
+            testConcatenated: {
+                configFile: 'karma.conf.js',
+                singleRun: true
             },
-            watch: {
-                background: true
-            },
-            continuous: {
+            testMinified: {
+                configFile: 'karma.conf.min.js',
                 singleRun: true
             }
         },
@@ -75,7 +67,7 @@ module.exports = function (grunt) {
         watch: {
             sources: {
                 files: ['<%= concat.angulari18n.src %>', 'Gruntfile.js'],
-                tasks: ['newer:jshint', 'concat', 'uglify']
+                tasks: ['newer:jshint', 'concat', 'uglify', 'karma']
             }
         }
     });
