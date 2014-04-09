@@ -3,5 +3,8 @@ node_js:
   - "0.10"
 
 before_install:
-  - npm install -g grunt-cli karma-cli
+  - npm install -g grunt-cli karma-cli bower
+install:  
   - bower install
+script:
+  - grunt
