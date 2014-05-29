@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('angular-globalize-it')
-    .directive('resKey', ['i18nService',
-        function (i18nService) {
+    .directive('resKey', ['i18nService', '$sce',
+        function (i18nService, $sce) {
             return {
                 restrict: 'A',
                 link: function (scope, element, attrs) {
@@ -21,7 +21,7 @@ angular.module('angular-globalize-it')
                                 args.push(scope.$eval(value.trim()));
                             });
                         }
-                        element.html(i18nService.translate.apply(i18nService, args));
+                        element.html($sce.getTrustedHtml(i18nService.translate.apply(i18nService, args)));
 
                         //translate attributes
                         angular.forEach(translatableAttrs, function (attr) {
