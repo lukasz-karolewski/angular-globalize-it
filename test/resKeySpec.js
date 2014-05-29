@@ -3,7 +3,7 @@
 
     //creating fake module to test provider methods
     beforeEach(function () {
-            var fakeModule = angular.module('fake', [])
+            angular.module('fake', [])
                 .config(function (i18nServiceProvider) {
                     i18nServiceProvider.setCulture('pl-PL');
                     i18nServiceProvider.setUICulture('pl');
@@ -43,15 +43,16 @@
         }));
 
         it('should put resource value inside the element', function () {
+            expect(ele).toBeDefined();
             expect(ele.html()).toBe('this is a test');
         });
     });
 
-    describe('testting translation of alt and title attriutes', function () {
+    describe('testing translation of alt and title attributes of image tag', function () {
         beforeEach(inject(function ($compile, $rootScope) {
             scope = $rootScope;
             ele = angular.element(
-                '<img res-key="test.image"></img>'
+                '<img res-key="test.image" />'
             );
             $compile(ele)(scope);
             scope.$apply();
@@ -64,11 +65,11 @@
         });
     });
 
-    describe('testting translation of alt and title attriutes', function () {
+    describe('testing translation of alt and title attributes of div', function () {
         beforeEach(inject(function ($compile, $rootScope) {
             scope = $rootScope;
             ele = angular.element(
-                '<div type="text" res-key="test.input"></div>'
+                '<div res-key="test.input"></div>'
             );
             $compile(ele)(scope);
             scope.$apply();

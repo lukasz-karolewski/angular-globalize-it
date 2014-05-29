@@ -1,7 +1,8 @@
-/* angular-globalize-it-1.0.0 09-04-2014 */
+/* angular-globalize-it-1.0.0 29-05-2014 */
 "use strict";
 // Source: src/app.js
-angular.module('angular-globalize-it', []);
+angular.module('angular-globalize-it', ['ngSanitize']);
+
 // Source: src/services/i18nService.js
 angular.module('angular-globalize-it')
     .provider('i18nService', [function () {
@@ -135,8 +136,8 @@ angular.module('angular-globalize-it')
     }]);
 // Source: src/directives/resKey.js
 angular.module('angular-globalize-it')
-    .directive('resKey', ['i18nService',
-        function (i18nService) {
+    .directive('resKey', ['i18nService', '$sce',
+        function (i18nService, $sce) {
             return {
                 restrict: 'A',
                 link: function (scope, element, attrs) {
@@ -155,7 +156,7 @@ angular.module('angular-globalize-it')
                                 args.push(scope.$eval(value.trim()));
                             });
                         }
-                        element.html(i18nService.translate.apply(i18nService, args));
+                        element.html($sce.getTrustedHtml(i18nService.translate.apply(i18nService, args)));
 
                         //translate attributes
                         angular.forEach(translatableAttrs, function (attr) {

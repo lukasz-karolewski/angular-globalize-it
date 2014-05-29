@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('angular-globalize-it', []);
+angular.module('angular-globalize-it', ['ngSanitize']);

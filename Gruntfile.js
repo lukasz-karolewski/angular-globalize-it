@@ -2,7 +2,7 @@ module.exports = function (grunt) {
     require('load-grunt-tasks')(grunt);
     require('time-grunt')(grunt);
 
-    grunt.registerTask('default', ['jshint', 'concat', 'uglify', 'karma']);
+    grunt.registerTask('default', ['jshint', 'concat', 'uglify', 'karma:testConcatenated']);
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -24,7 +24,7 @@ module.exports = function (grunt) {
                     'src/directives/*.js'
                 ],
                 dest: 'dist/<%= pkg.name %>.js'
-            },
+            }
         },
 
         uglify: {
@@ -52,7 +52,14 @@ module.exports = function (grunt) {
                 src: ['<%= concat.angulari18n.src %>']
             }
         },
-
+        bower: {
+            install: {
+                options: {
+                    copy: false,
+                    verbose: true
+                }
+            }
+        },
         karma: {
             testConcatenated: {
                 configFile: 'karma.conf.js',
@@ -66,8 +73,8 @@ module.exports = function (grunt) {
 
         watch: {
             sources: {
-                files: ['<%= concat.angulari18n.src %>', 'Gruntfile.js'],
-                tasks: ['newer:jshint', 'concat', 'uglify', 'karma']
+                files: ['<%= concat.angulari18n.src %>', 'test/*.js'],
+                tasks: ['default']
             }
         }
     });
