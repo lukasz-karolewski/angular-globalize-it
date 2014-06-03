@@ -18,7 +18,10 @@ module.exports = function (config) {
             {pattern: 'bower_components/globalize/lib/cultures/*.js', included: true, watched: false},
 
             //sources
-            'dist/angular-globalize-it.js',
+            'src/app.js',
+            'src/services/*.js',
+            'src/filters/*.js',
+            'src/directives/*.js',
 
             //specs
             'test/*Spec.js'

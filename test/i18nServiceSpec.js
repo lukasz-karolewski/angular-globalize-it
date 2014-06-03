@@ -47,7 +47,7 @@ describe('Provider: i18nService', function () {
     describe('formatting with pl culture', function () {
         //creating fake module to test provider methods
         beforeEach(function () {
-                var fakeModule = angular.module('fake', [])
+                angular.module('fake', [])
                     .config(function (i18nServiceProvider) {
                         i18nServiceProvider.setCulture('pl-PL');
                         i18nServiceProvider.setUICulture('pl');
@@ -98,15 +98,17 @@ describe('Provider: i18nService', function () {
     describe('translate key and get pluralized values', function () {
         //creating fake module to test provider methods
         beforeEach(function () {
-                var fakeModule = angular.module('fake', [])
+                angular.module('fake', [])
                     .config(function (i18nServiceProvider) {
                         i18nServiceProvider.setCulture('pl-PL');
                         i18nServiceProvider.setUICulture('pl');
+                        i18nServiceProvider.addNamedParameter('namedParam', 'angular-globalize-it');
 
                         //artificially filling out translation dictionary
                         Globalize.addCultureInfo('default', {
                             messages: {
                                 'test.key.with.params': 'second param is {1}, first param is {0}',
+                                'test.key.with.params.and.named.param': '{namedParam} second param is {1}, first param is {0} {namedParam}',
                                 'pluralized.test.zero': 'zero',
                                 'pluralized.test.one': 'one',
                                 'pluralized.test.two': 'two',
@@ -128,6 +130,10 @@ describe('Provider: i18nService', function () {
 
         it('should retrieve value of resource and fill in with params', function () {
             expect(i18nService.translate('test.key.with.params', 123, 321)).toBe('second param is 321, first param is 123');
+        });
+
+        it('should replace numbered params and named param', function () {
+            expect(i18nService.translate('test.key.with.params.and.named.param', 123, 321)).toBe('angular-globalize-it second param is 321, first param is 123 angular-globalize-it');
         });
 
         it('should not fail when key doesnt exist or is empy', function () {

@@ -54,10 +54,12 @@ This is a key value pair dictionary. {0}, {1} are placeholders for the parameter
 * Always put full sentence or full paragraph into single resource key.
 * Use placeholders to fill in with parameters.
 
-Using resources
-in a partial:
-use res-key directive with res-param attribute. Example:
-```
+####Using resources
+* in a partial:
+use res-key and res-param directives. 
+
+example:
+```html
 <span res-key="account.licensing.spaceusage" res-params="licenseInfo.storage.used | i18nNumber, licenseInfo.storage.max | i18nNumber">String inside will be replaced with content from resources</span>
 ```
 where account.licensing.spaceusage is a resource key from resources-default.js file
@@ -65,11 +67,27 @@ where account.licensing.spaceusage is a resource key from resources-default.js f
 res-key is a string and a key in resource dictionary. (naming convention described below)
 res-params is a comma separated list of expressions
 
-in a controller, factory, or anywhere else inject i18nservice and use translate method
+or 
 
+use translate filter
+```
+{{'account.licensing.spaceusage' | translate:'first param':'second param'}}
+```
 
+* in a controller, factory, or anywhere else inject i18nService and use translate method
+```javascript
 i18nService.translate(key, param1, param2, ...) - with params
+```
 
+####named parameters
+imagine you need to change name of your product 
+```javascript
+    angular.module('sample', ['angular-globalize-it'])
+        .config(function (i18nServiceProvider) {
+                // product name will be available in all resources for use, you don't have to pass this param value everywhere
+                i18nServiceProvider.addNamedParameter('productName', 'angular-globalize-it');
+        })
+```
 
 ###handling pluralization
 ```

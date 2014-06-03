@@ -1,4 +1,4 @@
-/* angular-globalize-it-1.0.0 29-05-2014 */
+/* angular-globalize-it-1.1.2 03-06-2014 */
 "use strict";
 // Source: src/app.js
 angular.module('angular-globalize-it', ['ngSanitize']);
@@ -17,14 +17,20 @@ angular.module('angular-globalize-it')
             uiCulture = _uiCulture_;
         };
 
+        var namedParams = {};
+        this.addNamedParameter = function (name, value) {
+            namedParams[name] = value;
+        };
+
         this.$get = function () {
-            return new I18nService(culture, uiCulture);
+            return new I18nService(culture, uiCulture, namedParams);
         };
 
         //i18nService definition
-        var I18nService = function (culture, uiCulture) {
+        var I18nService = function (culture, uiCulture, namedParams) {
             this.culture = culture;
             this.uiCulture = uiCulture;
+            this.namedParams = namedParams;
         };
 
         I18nService.prototype.currentCulture = function () {
@@ -64,9 +70,16 @@ angular.module('angular-globalize-it')
         };
 
         I18nService.prototype.translate = function (key) {
-            arguments[0] = Globalize.localize(key, this.uiCulture);
+            var keyValue = Globalize.localize(key, this.uiCulture);
+            var argumentsDict = angular.copy(this.namedParams);
 
-            return format.apply(null, arguments);
+            for (var i = 0; i < arguments.length; i++) {
+                if (i === 0) {
+                    continue;
+                }
+                argumentsDict[i - 1] = arguments[i];
+            }
+            return format.apply(null, [keyValue, argumentsDict]);
         };
 
         I18nService.prototype.getPluralizedValues = function (key) {
@@ -80,22 +93,22 @@ angular.module('angular-globalize-it')
             return whenValues;
         };
 
-        //port of .net String.format method
-        function format()  {
+        // first arg is a string with placeholders,
+        // second arg is a dictionary of vars to replace, key is supposed to be surrounded with angle brackets
+        function format() {
             var s = arguments[0];
-            
             if (typeof s != 'undefined') {
-                for (var i = 0; i < arguments.length - 1; i++) {
-                    var reg = new RegExp('\\{' + i + '\\}', 'gm');
-                    s = s.replace(reg, arguments[i + 1]);
-                }
+                angular.forEach(arguments[1], function (value, key) {
+                    var reg = new RegExp('\\{' + key + '\\}', 'gm');
+                    s = s.replace(reg, value);
+                });
             }
             return s;
         }
 
     }]);
 
-// Source: src/filters/i18nFilters.js
+// Source: src/filters/i18nDateFilter.js
 angular.module('angular-globalize-it')
 
     .filter('i18nDate', ['i18nService', function (i18nService) {
@@ -108,9 +121,11 @@ angular.module('angular-globalize-it')
             }
             return i18nService.formatDate(new Date(input), 'date');
         };
-    }])
+    }]);
+// Source: src/filters/i18nDateTimeFilter.js
+angular.module('angular-globalize-it')
 
-    //custom format of short date and
+    //short date and short time
     .filter('i18nDateTime', ['i18nService', function (i18nService) {
         return function (input) {
             if (!input) {return '';}
@@ -121,20 +136,29 @@ angular.module('angular-globalize-it')
             }
             return i18nService.formatDate(new Date(input), 'date') + ' ' + i18nService.formatDate(new Date(input), 'time');
         };
-    }])
-
+    }]);
+// Source: src/filters/i18nNumberFilter.js
+angular.module('angular-globalize-it')
     .filter('i18nNumber', ['i18nService', function (i18nService) {
         return function (input) {
             return i18nService.formatNumber(input, 'number');
         };
-    }])
-
+    }]);
+// Source: src/filters/i18nPercentFilter.js
+angular.module('angular-globalize-it')
     .filter('i18nPercent', ['i18nService', function (i18nService) {
         return function (input) {
             return i18nService.formatNumber(input, 'percent');
         };
     }]);
-// Source: src/directives/resKey.js
+// Source: src/filters/translateFilter.js
+angular.module('angular-globalize-it')
+    .filter('translate', ['i18nService', function (i18nService) {
+        return function () {
+            return i18nService.translate.apply(i18nService, arguments);
+        };
+    }]);
+// Source: src/directives/resKeyDirective.js
 angular.module('angular-globalize-it')
     .directive('resKey', ['i18nService', '$sce',
         function (i18nService, $sce) {

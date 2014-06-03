@@ -13,14 +13,20 @@ angular.module('angular-globalize-it')
             uiCulture = _uiCulture_;
         };
 
+        var namedParams = {};
+        this.addNamedParameter = function (name, value) {
+            namedParams[name] = value;
+        };
+
         this.$get = function () {
-            return new I18nService(culture, uiCulture);
+            return new I18nService(culture, uiCulture, namedParams);
         };
 
         //i18nService definition
-        var I18nService = function (culture, uiCulture) {
+        var I18nService = function (culture, uiCulture, namedParams) {
             this.culture = culture;
             this.uiCulture = uiCulture;
+            this.namedParams = namedParams;
         };
 
         I18nService.prototype.currentCulture = function () {
@@ -60,9 +66,16 @@ angular.module('angular-globalize-it')
         };
 
         I18nService.prototype.translate = function (key) {
-            arguments[0] = Globalize.localize(key, this.uiCulture);
+            var keyValue = Globalize.localize(key, this.uiCulture);
+            var argumentsDict = angular.copy(this.namedParams);
 
-            return format.apply(null, arguments);
+            for (var i = 0; i < arguments.length; i++) {
+                if (i === 0) {
+                    continue;
+                }
+                argumentsDict[i - 1] = arguments[i];
+            }
+            return format.apply(null, [keyValue, argumentsDict]);
         };
 
         I18nService.prototype.getPluralizedValues = function (key) {
@@ -76,15 +89,15 @@ angular.module('angular-globalize-it')
             return whenValues;
         };
 
-        //port of .net String.format method
-        function format()  {
+        // first arg is a string with placeholders,
+        // second arg is a dictionary of vars to replace, key is supposed to be surrounded with angle brackets
+        function format() {
             var s = arguments[0];
-            
             if (typeof s != 'undefined') {
-                for (var i = 0; i < arguments.length - 1; i++) {
-                    var reg = new RegExp('\\{' + i + '\\}', 'gm');
-                    s = s.replace(reg, arguments[i + 1]);
-                }
+                angular.forEach(arguments[1], function (value, key) {
+                    var reg = new RegExp('\\{' + key + '\\}', 'gm');
+                    s = s.replace(reg, value);
+                });
             }
             return s;
         }
