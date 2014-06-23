@@ -1,6 +1,6 @@
 {
   "name": "angular-globalize-it",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "main": "dist/angular-globalize-it.js",
   "license": "MIT",
   "ignore": [
