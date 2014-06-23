@@ -1,4 +1,4 @@
-/* angular-globalize-it-1.1.2 03-06-2014 */
+/* angular-globalize-it-1.2.0 23-06-2014 */
 "use strict";
 // Source: src/app.js
 angular.module('angular-globalize-it', ['ngSanitize']);
@@ -6,23 +6,34 @@ angular.module('angular-globalize-it', ['ngSanitize']);
 // Source: src/services/i18nService.js
 angular.module('angular-globalize-it')
     .provider('i18nService', [function () {
+        var self = this;
+
+        //defaults
         var culture = 'en-US';
         var uiCulture = 'en';
+        var namedParams = {};
 
-        this.setCulture = function (_culture_) {
+
+        self.setCulture = function (_culture_) {
             culture = _culture_;
         };
 
-        this.setUICulture = function (_uiCulture_) {
+        self.setUICulture = function (_uiCulture_) {
             uiCulture = _uiCulture_;
         };
 
-        var namedParams = {};
-        this.addNamedParameter = function (name, value) {
+        self.addNamedParameter = function (name, value) {
             namedParams[name] = value;
         };
 
-        this.$get = function () {
+        self.addNamedParameters = function (dict) {
+            angular.forEach(dict, function (value, key) {
+                    self.addNamedParameter(key, value);
+                }
+            );
+        };
+
+        self.$get = function () {
             return new I18nService(culture, uiCulture, namedParams);
         };
 

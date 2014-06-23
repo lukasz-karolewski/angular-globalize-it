@@ -103,12 +103,14 @@ describe('Provider: i18nService', function () {
                         i18nServiceProvider.setCulture('pl-PL');
                         i18nServiceProvider.setUICulture('pl');
                         i18nServiceProvider.addNamedParameter('namedParam', 'angular-globalize-it');
+                        i18nServiceProvider.addNamedParameters({'namedParamBulkAdd1': '1', 'namedParamBulkAdd2': '2', 'namedParamBulkAdd3': '3'});
 
                         //artificially filling out translation dictionary
                         Globalize.addCultureInfo('default', {
                             messages: {
                                 'test.key.with.params': 'second param is {1}, first param is {0}',
                                 'test.key.with.params.and.named.param': '{namedParam} second param is {1}, first param is {0} {namedParam}',
+                                'test.key.with.params.and.named.param.added.in.bulk': '{namedParamBulkAdd1} {namedParamBulkAdd2} {namedParamBulkAdd3}',
                                 'pluralized.test.zero': 'zero',
                                 'pluralized.test.one': 'one',
                                 'pluralized.test.two': 'two',
@@ -134,6 +136,10 @@ describe('Provider: i18nService', function () {
 
         it('should replace numbered params and named param', function () {
             expect(i18nService.translate('test.key.with.params.and.named.param', 123, 321)).toBe('angular-globalize-it second param is 321, first param is 123 angular-globalize-it');
+        });
+
+        it('bulk adding params should work', function () {
+            expect(i18nService.translate('test.key.with.params.and.named.param.added.in.bulk')).toBe('1 2 3');
         });
 
         it('should not fail when key doesnt exist or is empy', function () {
