@@ -108,6 +108,7 @@ describe('Provider: i18nService', function () {
                         //artificially filling out translation dictionary
                         Globalize.addCultureInfo('default', {
                             messages: {
+                                'single.param': '{0}',
                                 'test.key.with.params': 'second param is {1}, first param is {0}',
                                 'test.key.with.params.and.named.param': '{namedParam} second param is {1}, first param is {0} {namedParam}',
                                 'test.key.with.params.and.named.param.added.in.bulk': '{namedParamBulkAdd1} {namedParamBulkAdd2} {namedParamBulkAdd3}',
@@ -132,6 +133,11 @@ describe('Provider: i18nService', function () {
 
         it('should retrieve value of resource and fill in with params', function () {
             expect(i18nService.translate('test.key.with.params', 123, 321)).toBe('second param is 321, first param is 123');
+        });
+
+        it('should retrieve value of resource and fill in with params that are special characters', function () {
+            expect(i18nService.translate('single.param', '!@#$%^&*()_+~":><<>')).toEqual('!@#$%^&amp;*()_+~&quot;:&gt;&lt;&lt;&gt;');
+            expect(i18nService.translate('test.key.with.params', '!@#$%^&*()_+~":><<>\'', 'asd')).toEqual('second param is asd, first param is !@#$%^&amp;*()_+~&quot;:&gt;&lt;&lt;&gt;&#39;');
         });
 
         it('should replace numbered params and named param', function () {

@@ -79,12 +79,13 @@ angular.module('angular-globalize-it')
         I18nService.prototype.translate = function (key) {
             var keyValue = Globalize.localize(key, this.uiCulture);
             var argumentsDict = angular.copy(this.namedParams);
-
-            for (var i = 0; i < arguments.length; i++) {
-                if (i === 0) {
-                    continue;
+            var tmp;
+            for (var i = 1; i < arguments.length; i++) {
+                tmp = arguments[i];
+                if(typeof tmp === 'string') {
+                    tmp = escapeString(tmp);
                 }
-                argumentsDict[i - 1] = arguments[i];
+                argumentsDict[i - 1] = tmp;
             }
             return format.apply(null, [keyValue, argumentsDict]);
         };
@@ -99,6 +100,10 @@ angular.module('angular-globalize-it')
             });
             return whenValues;
         };
+
+        function escapeString(string) {
+            return string.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
 
         // first arg is a string with placeholders,
         // second arg is a dictionary of vars to replace, key is supposed to be surrounded with angle brackets
