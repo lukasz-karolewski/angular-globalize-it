@@ -103,7 +103,11 @@ describe('Provider: i18nService', function () {
                         i18nServiceProvider.setCulture('pl-PL');
                         i18nServiceProvider.setUICulture('pl');
                         i18nServiceProvider.addNamedParameter('namedParam', 'angular-globalize-it');
-                        i18nServiceProvider.addNamedParameters({'namedParamBulkAdd1': '1', 'namedParamBulkAdd2': '2', 'namedParamBulkAdd3': '3'});
+                        i18nServiceProvider.addNamedParameters({
+                            'namedParamBulkAdd1': '1',
+                            'namedParamBulkAdd2': '2',
+                            'namedParamBulkAdd3': '3'
+                        });
 
                         //artificially filling out translation dictionary
                         Globalize.addCultureInfo('default', {
@@ -148,7 +152,7 @@ describe('Provider: i18nService', function () {
             expect(i18nService.translate('test.key.with.params.and.named.param.added.in.bulk')).toBe('1 2 3');
         });
 
-        it('should not fail when key doesnt exist or is empy', function () {
+        it('should not fail when key does not exist or is empty', function () {
             expect(i18nService.translate()).toBe(undefined);
             expect(i18nService.translate('key.doesnt.exist')).toBe(undefined);
         });

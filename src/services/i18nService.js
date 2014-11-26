@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('angular-globalize-it')
-    .provider('i18nService', [function () {
+    .provider('i18nService', function () {
         var self = this;
 
         //defaults
@@ -29,93 +29,90 @@ angular.module('angular-globalize-it')
             );
         };
 
-        self.$get = function () {
-            return new I18nService(culture, uiCulture, namedParams);
-        };
+        self.$get = function ($log) {
 
-        //i18nService definition
-        var I18nService = function (culture, uiCulture, namedParams) {
-            this.culture = culture;
-            this.uiCulture = uiCulture;
-            this.namedParams = namedParams;
-        };
-
-        I18nService.prototype.currentCulture = function () {
-            return this.culture;
-        };
-
-        I18nService.prototype.currentUICulture = function () {
-            return this.uiCulture;
-        };
-
-        I18nService.prototype.formatDate = function (date, format) {
-            switch (format) {
-                case 'date':
-                    return Globalize.format(date, 'd', this.culture);
-                case 'time':
-                    return Globalize.format(date, 't', this.culture);
-                case 'datetime':
-                    return Globalize.format(date, 'f', this.culture);
-                default:
-                    return Globalize.format(date, 'f', this.culture);
+            function escapeString(string) {
+                return string.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
             }
-        };
 
-        I18nService.prototype.formatNumber = function (number, format) {
-            switch (format) {
-                case undefined:
-                    return Globalize.format(number, 'n', this.culture);
-                case 'number':
-                    return Globalize.format(number, 'i', this.culture);
-                case 'percent':
-                    return Globalize.format(number, 'p', this.culture);
-                case 'currency':
-                    return Globalize.format(number, 'c', this.culture);
-                default:
-                    return Globalize.format(number, format, this.culture);
-            }
-        };
-
-        I18nService.prototype.translate = function (key) {
-            var keyValue = Globalize.localize(key, this.uiCulture);
-            var argumentsDict = angular.copy(this.namedParams);
-            var tmp;
-            for (var i = 1; i < arguments.length; i++) {
-                tmp = arguments[i];
-                if(typeof tmp === 'string') {
-                    tmp = escapeString(tmp);
+            // first arg is a string with placeholders,
+            // second arg is a dictionary of vars to replace, key is supposed to be surrounded with angle brackets
+            function format() {
+                var s = arguments[0];
+                if (typeof s != 'undefined') {
+                    angular.forEach(arguments[1], function (value, key) {
+                        var reg = new RegExp('\\{' + key + '\\}', 'gm');
+                        s = s.replace(reg, value);
+                    });
                 }
-                argumentsDict[i - 1] = tmp;
+                return s;
             }
-            return format.apply(null, [keyValue, argumentsDict]);
+
+            return {
+                currentCulture: function () {
+                    return culture;
+                },
+
+                currentUICulture: function () {
+                    return uiCulture;
+                },
+
+                formatDate: function (date, format) {
+                    switch (format) {
+                        case 'date':
+                            return Globalize.format(date, 'd', culture);
+                        case 'time':
+                            return Globalize.format(date, 't', culture);
+                        case 'datetime':
+                            return Globalize.format(date, 'f', culture);
+                        default:
+                            return Globalize.format(date, 'f', culture);
+                    }
+                },
+
+                formatNumber: function (number, format) {
+                    switch (format) {
+                        case undefined:
+                            return Globalize.format(number, 'n', culture);
+                        case 'number':
+                            return Globalize.format(number, 'i', culture);
+                        case 'percent':
+                            return Globalize.format(number, 'p', culture);
+                        case 'currency':
+                            return Globalize.format(number, 'c', culture);
+                        default:
+                            return Globalize.format(number, format, culture);
+                    }
+                },
+
+                translate: function (key) {
+                    var keyValue = Globalize.localize(key, uiCulture);
+                    if (typeof (keyValue) === 'undefined') {
+                        $log.warn(format.apply(null, ['Missing translation, {0} does not exist', key]));
+                    }
+
+                    var argumentsDict = angular.copy(namedParams);
+                    var tmp;
+                    for (var i = 1; i < arguments.length; i++) {
+                        tmp = arguments[i];
+                        if (typeof tmp === 'string') {
+                            tmp = escapeString(tmp);
+                        }
+                        argumentsDict[i - 1] = tmp;
+                    }
+                    return format.apply(null, [keyValue, argumentsDict]);
+                },
+
+                getPluralizedValues: function (key) {
+                    var self = this;
+
+                    var whenValues = {};
+                    angular.forEach(['zero', 'one', 'two', 'few', 'many', 'other'], function (value) {
+                        var tmp = self.translate(key + '.' + value);
+                        whenValues[value] = tmp || '';
+                    });
+                    return whenValues;
+                }
+            };
         };
-
-        I18nService.prototype.getPluralizedValues = function (key) {
-            var self = this;
-
-            var whenValues = {};
-            angular.forEach(['zero', 'one', 'two', 'few', 'many', 'other'], function (value) {
-                var tmp = self.translate(key + '.' + value);
-                whenValues[value] = tmp || '';
-            });
-            return whenValues;
-        };
-
-        function escapeString(string) {
-            return string.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        }
-
-        // first arg is a string with placeholders,
-        // second arg is a dictionary of vars to replace, key is supposed to be surrounded with angle brackets
-        function format() {
-            var s = arguments[0];
-            if (typeof s != 'undefined') {
-                angular.forEach(arguments[1], function (value, key) {
-                    var reg = new RegExp('\\{' + key + '\\}', 'gm');
-                    s = s.replace(reg, value);
-                });
-            }
-            return s;
-        }
-
-    }]);
+    });

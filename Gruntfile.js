@@ -2,8 +2,9 @@ module.exports = function (grunt) {
     require('load-grunt-tasks')(grunt);
     require('time-grunt')(grunt);
 
-    grunt.registerTask('default', ['jshint', 'concat', 'uglify', 'karma:testConcatenated']);
-
+    grunt.registerTask('default', ['build', 'test']);
+    grunt.registerTask('build', ['jshint', 'concat', 'ngAnnotate', 'uglify']);
+    grunt.registerTask('test', ['karma']);
     grunt.registerTask('publish', ['bump-only:minor', 'default', 'changelog', 'bump-commit']);
 
     grunt.initConfig({
@@ -21,11 +22,22 @@ module.exports = function (grunt) {
             angulari18n: {
                 src: [
                     'src/app.js',
-                    'src/services/*.js',
-                    'src/filters/*.js',
-                    'src/directives/*.js'
+                    'src/**/*.js',
+                    '!**/*Spec.js'
                 ],
                 dest: 'dist/<%= pkg.name %>.js'
+            }
+        },
+
+        ngAnnotate: {
+            options: {
+                add: true,
+                remove: true,
+                singleQuotes: true
+            },
+            dist: {
+                src: ['<%= concat.angulari18n.dest %>'],
+                dest: '<%= concat.angulari18n.dest %>'
             }
         },
 
@@ -36,11 +48,13 @@ module.exports = function (grunt) {
                     ascii_only: true
                 },
                 ascii_only: true,
+                sourceMap: true,
+                sourceMapName: 'dist/<%= pkg.name %>.map',
                 banner: '/* <%= pkg.name %>-<%= pkg.version %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
             },
             angulari18n: {
                 files: {
-                    'dist/<%= pkg.name %>.min.js': ['<%= concat.angulari18n.dest %>']
+                    'dist/<%= pkg.name %>.min.js': ['<%= ngAnnotate.dist.dest %>']
                 }
             }
         },
@@ -54,6 +68,7 @@ module.exports = function (grunt) {
                 src: ['<%= concat.angulari18n.src %>']
             }
         },
+
         bower: {
             install: {
                 options: {
@@ -62,8 +77,9 @@ module.exports = function (grunt) {
                 }
             }
         },
+
         karma: {
-            testConcatenated: {
+            testConcat: {
                 configFile: 'karma.conf.js',
                 singleRun: true
             },
@@ -79,11 +95,13 @@ module.exports = function (grunt) {
                 tasks: ['default']
             }
         },
+
         changelog: {
             options: {
-                // Task-specific options go here.
+                //editor: "notepad++.exe"
             }
         },
+
         bump: {
             options: {
                 files: ['package.json', 'bower.json'],
