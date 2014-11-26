@@ -11,7 +11,7 @@
 
     <!-- globalize for regional info -->
     <script type="text/javascript" src="../bower_components/globalize/lib/globalize.js"></script>
-    <!-- actuall regional info -->
+    <!-- actual regional info -->
     <script type="text/javascript" src="../bower_components/globalize/lib/cultures/globalize.cultures.js"></script>
 
     <!-- this lib -->
@@ -24,9 +24,9 @@
         angular.module('sample', ['angular-globalize-it'])
 
                 .config(function (i18nServiceProvider) {
-                        i18nServiceProvider.setCulture('pl-PL');
-                        i18nServiceProvider.setUICulture('pl');
-                        i18nServiceProvider.addNamedParameter('productName', 'angular-globalize-it');
+                    i18nServiceProvider.setCulture('pl-PL');
+                    i18nServiceProvider.setUICulture('pl');
+                    i18nServiceProvider.addNamedParameter('productName', 'angular-globalize-it');
                 })
                 .controller('sampleCtrl', function ($scope) {
                     $scope.date = {
@@ -50,7 +50,7 @@ translate filter: {{'helloworld.positionalParam' | translate:'World! translate f
 translate filter with named parameter: {{'helloworld.namedParam' | translate }} <br/>
 
 res-key directive: <span res-key="helloworld.positionalParam" res-params="'World! res-key'"></span> <br/>
-res-key directive with named parameter:  <span res-key="helloworld.namedParam"></span> <br/>
+res-key directive with named parameter: <span res-key="helloworld.namedParam"></span> <br/>
 
 i18nDate: {{date.obj}} -> {{date.obj | i18nDate }} <br/>
 i18nDate: {{date.str}} -> {{date.str | i18nDate }} <br/>

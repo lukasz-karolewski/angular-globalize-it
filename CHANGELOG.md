@@ -1,3 +1,6 @@
+1.2.3
+- updated dependencies in bower.json
+
 1.2.2
 - i18nService.translate parameters are properly escaped
 - angular version updated
