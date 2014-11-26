@@ -102,7 +102,7 @@ module.exports = function (grunt) {
 
         changelog: {
             options: {
-                //editor: "notepad++.exe"
+                editor: "vim"
             }
         },
 
@@ -116,7 +116,7 @@ module.exports = function (grunt) {
                 createTag: true,
                 tagName: '%VERSION%',
                 tagMessage: 'Version %VERSION%',
-                push: false,
+                push: true,
                 pushTo: 'origin',
                 gitDescribeOptions: '--tags --always --abbrev=1 --dirty=-d'
             }
