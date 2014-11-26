@@ -4,6 +4,8 @@ module.exports = function (grunt) {
 
     grunt.registerTask('default', ['jshint', 'concat', 'uglify', 'karma:testConcatenated']);
 
+    grunt.registerTask('publish', ['bump-only:minor', 'default', 'changelog', 'bump-commit']);
+
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
@@ -75,6 +77,11 @@ module.exports = function (grunt) {
             sources: {
                 files: ['<%= concat.angulari18n.src %>', 'test/*.js'],
                 tasks: ['default']
+            }
+        },
+        changelog: {
+            options: {
+                // Task-specific options go here.
             }
         },
         bump: {
