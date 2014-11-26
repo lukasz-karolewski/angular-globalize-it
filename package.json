@@ -1,7 +1,13 @@
 {
   "name": "angular-globalize-it",
   "version": "1.2.2",
-  "repository": "https://github.com/kether667/angular-globalize-it",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kether667/angular-globalize-it.git"
+  },
+  "bugs" : {
+    "url": "https://github.com/kether667/angular-globalize-it/issues"
+  },
   "devDependencies": {
     "grunt": "0.4.5",
     "grunt-bower-task": "0.4.0",
@@ -23,5 +29,6 @@
     "karma-phantomjs-launcher": "0.1.1",
     "load-grunt-tasks": "0.4.0",
     "time-grunt": "0.3.1"
-  }
+  },
+  "license": "MIT"
 }
