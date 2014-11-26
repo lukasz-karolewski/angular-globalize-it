@@ -1,4 +1,4 @@
-/* angular-globalize-it-1.2.2 26-11-2014 */
+/* angular-globalize-it-1.2.3 26-11-2014 */
 "use strict";
 // Source: src/app.js
 angular.module('angular-globalize-it', ['ngSanitize']);

@@ -5,7 +5,11 @@ module.exports = function (grunt) {
     grunt.registerTask('default', ['build', 'test']);
     grunt.registerTask('build', ['jshint', 'concat', 'ngAnnotate', 'uglify']);
     grunt.registerTask('test', ['karma']);
-    grunt.registerTask('publish', ['bump-only:minor', 'default', 'changelog', 'bump-commit']);
+    grunt.registerTask('publish', ['bump-only:patch', 'refreshPkg', 'default', 'changelog', 'bump-commit']);
+
+    grunt.task.registerTask('refreshPkg', 'Refresh config.pkg after bump-only', function() {
+        grunt.config('pkg', grunt.file.readJSON('package.json'));
+    });
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -108,11 +112,11 @@ module.exports = function (grunt) {
                 updateConfigs: [],
                 commit: true,
                 commitMessage: 'Release v%VERSION%',
-                commitFiles: ['package.json', 'bower.json'],
+                commitFiles: ['-a'],
                 createTag: true,
                 tagName: '%VERSION%',
                 tagMessage: 'Version %VERSION%',
-                push: true,
+                push: false,
                 pushTo: 'origin',
                 gitDescribeOptions: '--tags --always --abbrev=1 --dirty=-d'
             }
